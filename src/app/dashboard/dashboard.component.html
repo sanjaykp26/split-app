@@ -1,0 +1,118 @@
+<p>
+  <mat-toolbar color="primary">
+    <span>Split Application</span>
+    <span style="margin-left: 20px; cursor: pointer" routerLink="/expenses"
+      >Expense</span
+    >
+  </mat-toolbar>
+</p>
+
+<div class="main-container">
+  <section class="section">
+    <form class="example-form">
+      <h1 class="h1">Add Person</h1>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Name" [formControl]="user" required />
+      </mat-form-field>
+    </form>
+    <div class="no-scrollbar">
+      <p *ngFor="let user of users">{{ user }}</p>
+    </div>
+    <div class="button-container">
+      <button mat-fab class="secondary" (click)="resetUserForm()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <button
+        mat-fab
+        class="primary"
+        [disabled]="!user.valid"
+        (click)="addPerson()"
+      >
+        <mat-icon>person_add</mat-icon>
+      </button>
+    </div>
+  </section>
+  <section class="section">
+    <form class="example-form" [formGroup]="expenseFormGroup">
+      <h1>Add Expense</h1>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          placeholder="Description"
+          formControlName="description"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input
+          type="number"
+          matInput
+          placeholder="Amount"
+          formControlName="amount"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Paid By</mat-label>
+        <mat-select
+          matNativeControl
+          required
+          formControlName="paidBy"
+          (selectionChange)="enableSplitAmong($event)"
+        >
+          <mat-option *ngFor="let user of users" [value]="user">
+            {{ user }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-chip-list #chipList>
+          <mat-chip
+            *ngFor="let person of persons"
+            [selectable]="selectable"
+            (removed)="remove(person)"
+          >
+            {{ person }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input
+            placeholder="Split Among *"
+            #personInput
+            matInput
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipList"
+            (matChipInputTokenEnd)="add($event)"
+            formControlName="splitAmong"
+            [disabled]="expenseFormGroup.controls.paidBy.value == ''"
+          />
+        </mat-chip-list>
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="selected($event)"
+        >
+          <mat-option *ngFor="let person of filteredPersons" [value]="person">
+            {{ person }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+    <div class="button-container">
+      <button mat-fab class="secondary" (click)="resetExpenseForm()">
+        <mat-icon>close</mat-icon>
+      </button>
+
+      <button
+        mat-fab
+        class="primary"
+        [disabled]="!expenseFormGroup.valid || persons.length == 0"
+        (click)="addExpense()"
+      >
+        <mat-icon>add_shopping_cart</mat-icon>
+      </button>
+    </div>
+  </section>
+</div>
+<app-display-expense [settleUpList]="settleUpList"></app-display-expense>

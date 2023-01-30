@@ -1,0 +1,9 @@
+<section class="section">
+  <div class="div">
+    Settle-Up List
+    <span class="span" *ngFor="let item of settleUpList"
+      >{{ item.from }} owes {{ item.to }}
+      {{ item.amount | currency : "EUR" }}</span
+    >
+  </div>
+</section>

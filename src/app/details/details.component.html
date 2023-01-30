@@ -1,0 +1,10 @@
+<section class="section">
+  <h1 class="h1">Expense details</h1>
+  <div *ngFor="let expense of expenses" class="div">
+    <span class="span"
+      >{{ expense.description | uppercase }} -
+      {{ expense.amount | currency : "EUR" }} paid by {{ expense.paidBy }} and
+      split with {{ expense.splitAmong }}</span
+    >
+  </div>
+</section>
