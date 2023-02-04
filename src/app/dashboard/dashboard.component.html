@@ -8,9 +8,9 @@
 </p>
 
 <div class="main-container">
-  <section class="section">
+  <section class="sect">
     <form class="example-form">
-      <h1 class="h1">Add Person</h1>
+      <h1>Add Person</h1>
       <mat-form-field class="example-full-width">
         <input matInput placeholder="Name" [formControl]="user" required />
       </mat-form-field>
@@ -32,7 +32,7 @@
       </button>
     </div>
   </section>
-  <section class="section">
+  <section class="sect">
     <form class="example-form" [formGroup]="expenseFormGroup">
       <h1>Add Expense</h1>
       <mat-form-field class="example-full-width">
@@ -112,7 +112,26 @@
       >
         <mat-icon>add_shopping_cart</mat-icon>
       </button>
+      <button
+        (click)="get()"
+        style="margin-left: 20px"
+        mat-flat-button
+        color="primary"
+      >
+        minimise transaction
+      </button>
     </div>
   </section>
 </div>
+
 <app-display-expense [settleUpList]="settleUpList"></app-display-expense>
+
+<section class="section">
+  <h1 class="h1">Minimisied Transaction</h1>
+  <div *ngFor="let pay of minimise" class="div">
+    <span class="span"
+      >{{ pay.from }} can pay {{ pay.amount | currency : "EUR" }} to
+      {{ pay.to }}</span
+    >
+  </div>
+</section>

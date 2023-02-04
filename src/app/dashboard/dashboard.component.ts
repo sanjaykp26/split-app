@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
   public users: string[] = [];
   public newExpense = expense;
   public settleUpList: any;
+  minimise: any;
   expenseFormGroup = new FormGroup({
     description: new FormControl('', [
       Validators.required,
@@ -42,12 +43,14 @@ export class DashboardComponent implements OnInit {
   @ViewChild('personInput', { static: false })
   personInput!: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete!: MatAutocomplete;
+
+  simplifyDebts: any;
+  debts: any;
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
     this.getUsers();
     this.getSettleUpList();
-    this.settleUpList = this.dataService.getSettleUpList();
     this.expenseFormGroup.valueChanges
       .pipe(
         debounceTime(300),
@@ -142,5 +145,8 @@ export class DashboardComponent implements OnInit {
       this.persons = [];
       this.expenseFormGroup.controls['splitAmong'].enable();
     }
+  }
+  get() {
+    this.minimise = this.dataService.minimizeTransactions();
   }
 }
